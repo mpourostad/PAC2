@@ -4,26 +4,13 @@
 #include <string.h>
 
 void removeSpaces(char* str) {
-  int i, x;
-  for(i=x=0; str[i]; ++i)
-    if(!isspace(str[i]) || (i > 0 && !isspace(str[i-1]))){
-        str[x++] = str[i];
-    }
-  str[x] = '\0';
-}
-void lowerCase(char* str){
-    long length = strlen (str);
-    for(int i = 0; i < length; i++){
-        str[i] = tolower(str[i]);
-    }
-}
-void removeTab(char* str){
-    long length = strlen (str);
-    for(int i = 0; i < length; i++){
-        if(str[i] == '\t'){
-            str[i] = ' ';
+    int i, j;
+    for(i=j=0; str[i]; ++i){
+        if(!isspace(str[i]) || (i > 0 && !isspace(str[i-1]))){
+            str[j++] = str[i];
         }
-    }
+    }    
+  str[j] = '\0';
 }
 char *partOfArray(char *a, int k, int num){
     char* part = (char*) malloc(k + 1);
@@ -34,11 +21,15 @@ char *partOfArray(char *a, int k, int num){
     part[2] = '\0';
     return part;
 }
-char *preprocessed(char *str){
+void preprocessed(char *str){
     removeSpaces(str);
-    lowerCase(str);
-    removeTab(str);
-    return str;
+    for(int i = 0; i < strlen(str); i++){
+        str[i] = tolower(str[i]);
+        if(isspace(str[i])){
+            str[i] = ' ';
+        }
+    }
+    
 }
 int ctr(int k, char *a, char *b){
     int count = 0;
@@ -91,14 +82,14 @@ int main(int argc, char *argv[]){
     fclose(file_b);
     putchar('\n');
 
-    buffer_a = preprocessed(buffer_a);
+    preprocessed(buffer_a);
     printf("processed file a: \n");
     printf("%s", buffer_a);
     size_a = strlen(buffer_a);
     //printf("\n%d\n size a", sizea);
     putchar('\n');
 
-    buffer_b = preprocessed(buffer_b);
+    preprocessed(buffer_b);
     printf("processed file b: \n");
     printf("%s", buffer_b);
     size_b = strlen(buffer_b);
